@@ -12,6 +12,12 @@ export default class Navbar extends Component {
           <li className="navbar-item">
           <Link to="/table" className="nav-link">Shipping Info</Link>
           </li>
+          <li className="navbar-item">
+          <Link to="/materialtable" className="nav-link">Material Ui Table Info</Link>
+          </li>
+          <li className="navbar-item">
+          <Link to="/searchjs" className="nav-link">Seach JS</Link>
+          </li>
         </ul>
         </div>
       </nav>

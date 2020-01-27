@@ -26,7 +26,7 @@ export default class Upload extends Component {
     e.preventDefault();
     this.fileUpload(this.state.file).then((response)=>{
       if(response) {
-        console.log(response.data.ops);
+        this.props.history.push('/table')
       }
     })
     }

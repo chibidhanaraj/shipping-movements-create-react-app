@@ -12,7 +12,7 @@ function App() {
           <Navbar />
           <br/>
           <Route path="/movements/upload" exact component={Upload} />
-          <Route path="/movements/view" exact component={MaterialTable} />
+          <Route path="/" exact component={MaterialTable} />
       </Router>
     </div>
     

@@ -63,8 +63,9 @@ export default class MaterialTable extends Component {
     
     
       componentDidMount() {
-        axios.get('http://localhost:8080/getList/')
+        axios.get('/api/getList/')
           .then(response => {
+            console.log(response)
             const shippingJsonData = response.data;
             this.setState({
               shippingJsonData

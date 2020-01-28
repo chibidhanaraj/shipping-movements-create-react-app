@@ -26,7 +26,7 @@ export default class Upload extends Component {
     e.preventDefault();
     this.fileUpload(this.state.file).then((response)=>{
       if(response) {
-        this.props.history.push('/movements/view')
+        this.props.history.push('/')
       }
     })
     }

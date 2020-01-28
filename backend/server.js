@@ -17,6 +17,7 @@ let path = require('path');
 let fs = require('fs-extra');
 
 //File Uploads
+
 let UPLOAD_LOCATION = path.join(__dirname, 'uploads');
 fs.mkdirsSync(UPLOAD_LOCATION);
 
@@ -50,7 +51,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 //multers disk storage settings
 var filesToStore = multer.diskStorage({ 
@@ -122,12 +122,19 @@ app.post('/movements', function (req, res) {
     });
 });
 
-app.get('/getList', function (req, res) {
+app.get('/api/getList', function (req, res) {
     ShippingInfo.find({}, function (err, shippingJson) {
         res.send(shippingJson)
     });
     
 });
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('/*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
 
 app.listen(portNumber, function () {
     console.log(`Now running on Port ${portNumber}...`);

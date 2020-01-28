@@ -16,10 +16,8 @@ require('dotenv').config();
 let path = require('path');
 let fs = require('fs-extra');
 
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
-
 //File Uploads
+
 let UPLOAD_LOCATION = path.join(__dirname, 'uploads');
 fs.mkdirsSync(UPLOAD_LOCATION);
 
@@ -33,7 +31,6 @@ const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
-
 
 //Bodyparser for the env variables.
 //Limit to receive many documents from uploaded excel
@@ -54,7 +51,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 //multers disk storage settings
 var filesToStore = multer.diskStorage({ 
@@ -117,23 +113,28 @@ app.post('/movements', function (req, res) {
             console.log(req.file)
             result = camelcaseKeys(result);
             ShippingInfo.collection.insertMany(result).then((info) => {
+                ShippingInfo.collection.updateMany({}, {$unset: {zip: 1, pin: 1, address: 1, city: 1  }});
+            }).then((info) => {
                 res.status(201).send(info)
-            });
+            })
             console.log('Saved in Db successfully')
         })
     });
 });
 
-app.get('/', function (req, res) {
-    res.render('home')
-});
-
-app.get('/getList', function (req, res) {
+app.get('/api/getList', function (req, res) {
     ShippingInfo.find({}, function (err, shippingJson) {
         res.send(shippingJson)
     });
     
 });
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('/*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
 
 app.listen(portNumber, function () {
     console.log(`Now running on Port ${portNumber}...`);

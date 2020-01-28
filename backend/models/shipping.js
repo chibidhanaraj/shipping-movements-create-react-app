@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var moment = require('moment');
-moment.locale('en-gb'); 
 
 
 const ShippingInfoSchema = new Schema({
